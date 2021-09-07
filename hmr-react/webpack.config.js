@@ -18,8 +18,12 @@ module.exports = (webpackConfigEnv, argv) => {
 
   return merge(defaultConfig, {
     // modify the webpack config however you'd like to by adding to this object
+    // output: {
+    //   library: "@hmr/react",
+    // },
     plugins: [
       new ReactRefreshWebpackPlugin({
+        // library: "@hmr/react",
         overlay: {
           sockHost: "localhost",
           sockPort: 8500,
