@@ -28,7 +28,11 @@ module.exports = (webpackConfigEnv, argv) => {
       }),
     ],
     devServer: {
-      hot: true,
+      client: {
+        webSocketURL: {
+          hostname: "localhost",
+        },
+      },
       https: {
         key: readCertificate("key.pem"),
         cert: readCertificate("cert.pem"),

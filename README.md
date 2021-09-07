@@ -1,39 +1,26 @@
-# node-js-getting-started
+# Issue with HMR when using single-spa and single-spa-react
 
-A barebones Node.js app using [Express 4](http://expressjs.com/).
+[single-spa](https://single-spa.js.org/) is an upcoming library for working with microfrontends.
 
-This application supports the [Getting Started on Heroku with Node.js](https://devcenter.heroku.com/articles/getting-started-with-nodejs) article - check it out.
+I have deployed a simple single-spa application at <https://sspa-hmr.herokuapp.com/> that is running a "single-spa-root-config" which then uses SystemJS to load and mount a microfrontend application to the page.
 
-## Running Locally
+One great feature with single-spa is the [import-map-overrides](https://github.com/joeldenning/import-map-overrides/) feature that allows you to tell the browser to fetch certain SystemJS modules from another URL (e.g. localhost). This is really useful when working with microfrontends because you only have to spin up a local webpack-dev-server for the one you're working with and then override that module to your localhost. All other microfrontends will be loaded from the normal deployment.
 
-Make sure you have [Node.js](http://nodejs.org/) and the [Heroku CLI](https://cli.heroku.com/) installed.
+## How to reproduce the issue
 
-```sh
-$ git clone https://github.com/heroku/node-js-getting-started.git # or clone your own fork
-$ cd node-js-getting-started
-$ npm install
-$ npm start
-```
+You will need authorized ssl certificates (or you'll need to bypass the security check with e.g. chrome) if you're using a mac use [this guide](docs/how-to-install-certs.md).
 
-Your app should now be running on [localhost:5000](http://localhost:5000/).
+1. Clone this repo and step into the folder `hmr-react`
+2. Run `npm install`
+3. Run `npm start` (if you didn't install the certs with the guide above you'll need to either remove or update the wepack.config.js so that the devServer.https points to correct certs or none at all)
+4. Open <https://sspa-hmr.herokuapp.com/>
+5. Click the little override icon in the lower right corner of the page
+6. Find and click the item `@hmr/react` in the list and enter `8500` in the input box for the override value
+7. Reload the page
+8. Now the `@hmr/react` module will be loaded from <https://localhost:8500/hmr-react-js> with webpack-dev-server
 
-## Deploying to Heroku
+The webpack config is configured with ReactRefreshWebpackPlugin and I see a two issues:
 
-```
-$ heroku create
-$ git push heroku main
-$ heroku open
-```
-or
+First I think the websocket URL configuration could be picked up from the values in webpack-config.js devServer.client property.
 
-[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
-
-## Documentation
-
-For more information about using Node.js on Heroku, see these Dev Center articles:
-
-- [Getting Started on Heroku with Node.js](https://devcenter.heroku.com/articles/getting-started-with-nodejs)
-- [Heroku Node.js Support](https://devcenter.heroku.com/articles/nodejs-support)
-- [Node.js on Heroku](https://devcenter.heroku.com/categories/nodejs)
-- [Best Practices for Node.js Development](https://devcenter.heroku.com/articles/node-best-practices)
-- [Using WebSockets on Heroku with Node.js](https://devcenter.heroku.com/articles/node-websockets)
+When changing something in the React app in e.g. `src/root.component.js` It appears as if the HMR was updated correctly according to the logs but the page itself does not refresh the module.
