@@ -35,7 +35,9 @@
     <script type="systemjs-importmap">
       {
         "imports": {
-          "single-spa": "https://cdn.jsdelivr.net/npm/single-spa@5.9.0/lib/system/single-spa.min.js"
+          "single-spa": "https://cdn.jsdelivr.net/npm/single-spa@5.9.0/lib/system/single-spa.min.js",
+          "react": "https://cdn.jsdelivr.net/npm/react@17.0.2/umd/react.js",
+          "react-dom": "https://cdn.jsdelivr.net/npm/react-dom@17.0.2/umd/react-dom.js"
         }
       }
     </script>
@@ -53,7 +55,9 @@
       {
         "imports": {
           "@sspa-hmr/root-config": "//localhost:9000/sspa-hmr-root-config.js",
-          "@sspa-hmr/hmr-react": "//localhost:8500/sspa-hmr-hmr-react.js"
+          "@sspa-hmr/hmr-react": "//localhost:8500/sspa-hmr-hmr-react.js",
+          "react": "https://cdn.jsdelivr.net/npm/react@17.0.2/umd/react.development.js",
+          "react-dom": "https://cdn.jsdelivr.net/npm/react-dom@17.0.2/umd/react-dom.development.js"
         }
       }
     </script>
