@@ -1,5 +1,7 @@
 # Issue with HMR when using single-spa and single-spa-react
 
+## EDIT: The issue can be resolved by enabling the React Developer Tools browser plugin
+
 [single-spa](https://single-spa.js.org/) is an upcoming library for working with microfrontends.
 
 ## How to reproduce the issue
